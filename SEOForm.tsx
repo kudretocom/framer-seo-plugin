@@ -12,11 +12,14 @@ export default function SEOForm() {
         setError("");
 
         try {
-            const response = await fetch("https://fictional-space-giggle-jj7vp5664jv6hpjjx-3000.preview.app.github.dev/seo-check", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ url }),
-            });
+            const response = await fetch(
+                "https://framer-seo-plugin-6lzwps325-kudretocoms-projects.vercel.app/seo-check",
+                {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ url }),
+                }
+            );
 
             if (!response.ok) {
                 throw new Error("SEO analizi sırasında hata oluştu.");

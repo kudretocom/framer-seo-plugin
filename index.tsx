@@ -1,16 +1,13 @@
-process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
-
 import express from 'express';
 import axios from 'axios';
 import * as cheerio from 'cheerio';
 import dns from 'dns';
-
 import cors from 'cors';
-app.use(cors());
 
 const app = express();
-const port = 3000;
+const port = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 // Ana Sayfa
@@ -28,7 +25,7 @@ app.post('/seo-check', async (req, res) => {
 
     try {
         const start = Date.now();
-        const { data } = await axios.get(url);
+        const { data } = await axios.get(url, { timeout: 10000 }); // 10 saniye timeout
         const loadTime = Date.now() - start;
 
         const $ = cheerio.load(data);
@@ -83,9 +80,9 @@ app.post('/seo-check', async (req, res) => {
             seoChecklist,
         });
 
-    } catch (error) {
-        console.error('SEO Analiz Hatası:', error);
-        res.status(500).json({ error: 'URL analiz edilirken bir hata oluştu.' });
+    } catch (error: any) {
+        console.error('SEO Analiz Hatası:', error.message);
+        res.status(500).json({ error: 'URL analiz edilirken bir hata oluştu.', details: error.message });
     }
 });
 
